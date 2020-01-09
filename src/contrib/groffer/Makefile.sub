@@ -1,0 +1,72 @@
+# Makefile.sub for `groffer' (integration into the `groff' source tree)
+
+# File position: <groff-source>/contrib/groffer/Makefile.sub
+
+# Copyright (C) 2001,2002,2005,2006 Free Software Foundation, Inc.
+# Written by Werner Lemberg <wl@gnu.org> and Bernd Warken.
+
+# Last update: 11 Oct 2006
+
+# This file is part of `groffer' which is part of `groff'.
+
+# `groff' is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+
+# `groff' is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with `groff'; see the files COPYING and LICENSE in the top
+# directory of the `groff' source.  If not, write to the Free Software
+# Foundation, 51 Franklin St - Fifth Floor, Boston, MA 02110-1301, USA.
+
+########################################################################
+
+MAN1=groffer.n
+CLEANADD=groffer groffer.n
+
+# not all make programs have $(RM) predefined.
+RM=rm -f
+
+all: groffer
+
+groffer: groffer.sh groffer2.sh version.sh
+	$(RM) $@;
+	sed \
+            -e "s|@g@|$(g)|g" \
+	    -e "s|@BINDIR@|$(DESTDIR)$(bindir)|g" \
+	    -e "s|@libdir@|$(DESTDIR)$(libdir)|g" \
+	    -e "s|@VERSION@|$(version)$(revision)|g" \
+	    $(srcdir)/groffer.sh >$@;
+	chmod +x $@
+
+install_data: groffer
+	-test -d $(DESTDIR)$(bindir) || $(mkinstalldirs) $(DESTDIR)$(bindir)
+	-$(RM) $(DESTDIR)$(bindir)/groffer
+	$(INSTALL_SCRIPT) groffer $(DESTDIR)$(bindir)/groffer
+	-test -d $(DESTDIR)$(libdir)/groff/groffer || \
+          $(mkinstalldirs) $(DESTDIR)$(libdir)/groff/groffer
+	-$(RM) $(DESTDIR)$(libdir)/groff/groffer/groffer2.sh
+	$(INSTALL_SCRIPT) $(srcdir)/groffer2.sh \
+	  $(DESTDIR)$(libdir)/groff/groffer/groffer2.sh
+	-$(RM) $(DESTDIR)$(libdir)/groff/groffer/version.sh
+	$(INSTALL_DATA) $(srcdir)/version.sh \
+	$(DESTDIR)$(libdir)/groff/groffer/version.sh
+
+uninstall_sub:
+	-$(RM) $(DESTDIR)$(bindir)/groffer
+	-$(RM) $(DESTDIR)$(libdir)/groff/groffer/groffer2.sh
+	-$(RM) $(DESTDIR)$(libdir)/groff/groffer/version.sh
+	-rmdir $(DESTDIR)$(libdir)/groff/groffer
+
+########################################################################
+# Emacs settings
+########################################################################
+#
+# Local Variables:
+# mode: makefile
+# End:
