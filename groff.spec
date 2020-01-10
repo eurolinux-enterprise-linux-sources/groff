@@ -3,7 +3,7 @@
 Summary: A document formatting system
 Name: groff
 Version: 1.22.2
-Release: 6%{?dist}
+Release: 8%{?dist}
 License: GPLv3+ and GFDL and BSD and MIT
 Group: Applications/Publishing
 URL: http://www.gnu.org/software/groff/
@@ -399,6 +399,12 @@ fi
 %doc %{_docdir}/%{name}-%{version}/pdf/
 
 %changelog
+* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 1.22.2-8
+- Mass rebuild 2014-01-24
+
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 1.22.2-7
+- Mass rebuild 2013-12-27
+
 * Tue Jul 23 2013 Peter Schiffer <pschiffe@redhat.com> 1.22.2-6
 - don't use /usr/bin/env in shebang
 
